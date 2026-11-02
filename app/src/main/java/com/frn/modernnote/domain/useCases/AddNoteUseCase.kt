@@ -7,7 +7,7 @@ class AddNoteUseCase(
     val repository: NoteRepository
 ) {
 
-    operator fun invoke(note: Note){
-        repository.addNote(note)
+    operator fun invoke(title: String,content: String){
+        repository.addNote(title = title, content = content)
     }
 }

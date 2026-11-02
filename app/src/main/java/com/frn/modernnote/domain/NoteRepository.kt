@@ -3,7 +3,7 @@ package com.frn.modernnote.domain
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
-    fun addNote(note: Note)
+    fun addNote(title: String,content: String)
     fun deleteNote(noteId: Int)
     fun getNote(noteId: Int): Note
     fun getNotes(): Flow<List<Note>>

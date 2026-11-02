@@ -37,19 +37,27 @@ class NoteViewModel : ViewModel() {
     private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
-        query.flatMapLatest {
-            if (it.isBlank()) {
-                getAllNotesUseCase()
-            } else {
-                searchNotesUseCase(it)
-            }
-        }.onEach {notes->
-            val pinnedNotes = notes.filter { it.isPinned }
-            val otherNotes = notes.filter { !it.isPinned }
-            _state.update {screenState ->
-                screenState.copy(pinnedNotes = pinnedNotes, otherNotes = otherNotes)
-            }
-        }.launchIn(scope)
+        addSomeNotes()
+        query.onEach { input -> _state.update { it.copy(query = input) } }
+            .flatMapLatest {input ->
+                if (input.isBlank()) {
+                    getAllNotesUseCase()
+                } else {
+                    searchNotesUseCase(input)
+                }
+            }.onEach { notes ->
+                val pinnedNotes = notes.filter { it.isPinned }
+                val otherNotes = notes.filter { !it.isPinned }
+                _state.update { screenState ->
+                    screenState.copy(pinnedNotes = pinnedNotes, otherNotes = otherNotes)
+                }
+            }.launchIn(scope)
+    }
+
+    private fun addSomeNotes(){
+        repeat(50){
+            addNoteUseCase(title = "Title N$it", content = "Content N$it")
+        }
     }
 
     fun processCommand(command: NoteScreenCommand) {
@@ -59,14 +67,13 @@ class NoteViewModel : ViewModel() {
             }
 
             is NoteScreenCommand.EditNote -> {
-                val title = command.note.title
+                val note = getNoteUseCase(command.note.id)
+                val title = note.title
                 editNoteUseCase(command.note.copy(title = "$title Edited"))
             }
 
             is NoteScreenCommand.InputSearchQuery -> {
-                query.update {
-                    it + command.query
-                }
+                query.update { command.query }
             }
 
             is NoteScreenCommand.SwitchPinnedStatus -> {
