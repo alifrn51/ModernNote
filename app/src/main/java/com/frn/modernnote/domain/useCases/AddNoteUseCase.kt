@@ -1,10 +1,13 @@
 package com.frn.modernnote.domain.useCases
 
 import com.frn.modernnote.domain.Note
+import com.frn.modernnote.domain.NoteRepository
 
-class AddNoteUseCase {
+class AddNoteUseCase(
+    val repository: NoteRepository
+) {
 
     operator fun invoke(note: Note){
-        TODO() // TODO: impl fun addNoteUseCase
+        repository.addNote(note)
     }
 }

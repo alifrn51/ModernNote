@@ -1,7 +1,11 @@
 package com.frn.modernnote.domain.useCases
 
-class SwitchPinnedStatusUseCase {
-    operator fun invoke(id: String){
-        TODO()// TODO: impl switchPinnedStatusUseCase
+import com.frn.modernnote.domain.NoteRepository
+
+class SwitchPinnedStatusUseCase(
+    val repository: NoteRepository
+) {
+    operator fun invoke(id: Int){
+        repository.switchPinnedStatus(id)
     }
 }

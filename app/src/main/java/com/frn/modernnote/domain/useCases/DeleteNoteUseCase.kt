@@ -1,8 +1,12 @@
 package com.frn.modernnote.domain.useCases
 
-class DeleteNoteUseCase {
+import com.frn.modernnote.domain.NoteRepository
+
+class DeleteNoteUseCase(
+    val repository: NoteRepository
+) {
 
     operator fun invoke(id: Int){
-        TODO()// TODO: impl deleteNoteUseCase
+        repository.deleteNote(id)
     }
 }

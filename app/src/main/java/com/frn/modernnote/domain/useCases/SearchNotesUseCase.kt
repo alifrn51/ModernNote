@@ -1,10 +1,13 @@
 package com.frn.modernnote.domain.useCases
 
 import com.frn.modernnote.domain.Note
+import com.frn.modernnote.domain.NoteRepository
 import kotlinx.coroutines.flow.Flow
 
-class SearchNotesUseCase {
+class SearchNotesUseCase(
+    val repository: NoteRepository
+) {
     operator fun invoke(query: String): Flow<List<Note>> {
-        TODO()// TODO: impl searchNoteUseCase
+        return repository.searchNote(query)
     }
 }
