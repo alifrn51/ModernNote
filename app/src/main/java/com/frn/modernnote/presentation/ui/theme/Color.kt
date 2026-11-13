@@ -2,7 +2,7 @@ package com.frn.modernnote.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val White = Color(0xFFF2F2F2)
+val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF1E1E1E)
 
 val Gray100 = Color(0xFFF9F9F9)

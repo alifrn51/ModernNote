@@ -2,6 +2,7 @@ package com.frn.modernnote.data
 
 import com.frn.modernnote.domain.Note
 import com.frn.modernnote.domain.NoteRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,21 +13,21 @@ object TestNoteRepositoryImpl : NoteRepository {
 
     private val notesListFlow = MutableStateFlow<List<Note>>(emptyList())
 
-    override fun addNote(title: String, content: String) {
+    override suspend fun addNote(title: String, content: String, updateAt: Long, isPinned: Boolean) {
         notesListFlow.update { oldNotes ->
             val note = Note(
                 id = oldNotes.size,
                 title = title,
                 content = content,
-                updateAt = System.currentTimeMillis(),
-                isPinned = false
+                updateAt = updateAt,
+                isPinned = isPinned
             )
 
             oldNotes + note
         }
     }
 
-    override fun deleteNote(noteId: Int) {
+    override suspend fun deleteNote(noteId: Int) {
         notesListFlow.update {
             it.toMutableList().apply {
                 removeIf { note -> note.id == noteId }
@@ -34,7 +35,7 @@ object TestNoteRepositoryImpl : NoteRepository {
         }
     }
 
-    override fun getNote(noteId: Int): Note {
+    override suspend fun getNote(noteId: Int): Note {
         return notesListFlow.value.first { note -> note.id == noteId }
     }
 
@@ -48,7 +49,7 @@ object TestNoteRepositoryImpl : NoteRepository {
         }
     }
 
-    override fun editNote(note: Note) {
+    override suspend fun editNote(note: Note) {
         notesListFlow.update { oldList ->
             oldList.map {
                 if (it.id == note.id) {
@@ -60,7 +61,7 @@ object TestNoteRepositoryImpl : NoteRepository {
         }
     }
 
-    override fun switchPinnedStatus(noteId: Int) {
+    override suspend fun switchPinnedStatus(noteId: Int) {
         notesListFlow.update { oldList ->
             oldList.map {
                 if (it.id == noteId) {

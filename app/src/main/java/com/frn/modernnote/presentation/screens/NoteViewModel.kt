@@ -1,6 +1,7 @@
 package com.frn.modernnote.presentation.screens
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.frn.modernnote.data.TestNoteRepositoryImpl
 import com.frn.modernnote.domain.useCases.AddNoteUseCase
 import com.frn.modernnote.domain.useCases.DeleteNoteUseCase
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class NoteViewModel : ViewModel() {
@@ -55,29 +57,33 @@ class NoteViewModel : ViewModel() {
     }
 
     private fun addSomeNotes(){
-        repeat(50){
-            addNoteUseCase(title = "Title N$it", content = "Content N$it")
+        viewModelScope.launch {
+            repeat(50){
+                addNoteUseCase(title = "Title N$it", content = "Content N$it")
+            }
         }
     }
 
     fun processCommand(command: NoteScreenCommand) {
-        when (command) {
-            is NoteScreenCommand.DeleteNote -> {
-                deleteNoteUseCase(command.noteId)
-            }
+        viewModelScope.launch {
+            when (command) {
+                is NoteScreenCommand.DeleteNote -> {
+                    deleteNoteUseCase(command.noteId)
+                }
 
-            is NoteScreenCommand.EditNote -> {
-                val note = getNoteUseCase(command.note.id)
-                val title = note.title
-                editNoteUseCase(command.note.copy(title = "$title Edited"))
-            }
+                is NoteScreenCommand.EditNote -> {
+                    val note = getNoteUseCase(command.note.id)
+                    val title = note.title
+                    editNoteUseCase(command.note.copy(title = "$title Edited"))
+                }
 
-            is NoteScreenCommand.InputSearchQuery -> {
-                query.update { command.query }
-            }
+                is NoteScreenCommand.InputSearchQuery -> {
+                    query.update { command.query }
+                }
 
-            is NoteScreenCommand.SwitchPinnedStatus -> {
-                switchPinnedStatusUseCase(command.noteId)
+                is NoteScreenCommand.SwitchPinnedStatus -> {
+                    switchPinnedStatusUseCase(command.noteId)
+                }
             }
         }
     }
