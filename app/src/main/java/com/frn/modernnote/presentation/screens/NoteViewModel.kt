@@ -41,7 +41,7 @@ class NoteViewModel : ViewModel() {
     init {
         addSomeNotes()
         query.onEach { input -> _state.update { it.copy(query = input) } }
-            .flatMapLatest {input ->
+            .flatMapLatest { input ->
                 if (input.isBlank()) {
                     getAllNotesUseCase()
                 } else {
@@ -56,10 +56,13 @@ class NoteViewModel : ViewModel() {
             }.launchIn(scope)
     }
 
-    private fun addSomeNotes(){
+    private fun addSomeNotes() {
         viewModelScope.launch {
-            repeat(50){
-                addNoteUseCase(title = "Title N$it", content = "Content N$it")
+            repeat(50) {
+                addNoteUseCase(
+                    content = "The text originates from sections $it and 1.10.33 of Cicero's \"De Finibus Bonorum et Malorum\", written in 45 BC, a treatise on ethics Wikipedia Wikipedia +1 .",
+                    title = "Lorem Ipsum $it is a standard placeholder text used in design and publishing to simulate real content without distracting from layout or typography."
+                )
             }
         }
     }

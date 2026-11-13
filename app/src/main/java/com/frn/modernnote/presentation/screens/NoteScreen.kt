@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -29,6 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +41,7 @@ import com.frn.modernnote.domain.Note
 import com.frn.modernnote.presentation.ui.theme.ModernNoteTheme
 import com.frn.modernnote.presentation.ui.theme.OtherNotesLightColors
 import com.frn.modernnote.presentation.ui.theme.PinnedNotesLightColors
+import com.frn.modernnote.presentation.utils.toFormatDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -81,6 +86,7 @@ fun NoteScreen(
                 itemsIndexed(
                     items = state.pinnedNotes, key = {_ , note -> note.id }) {index, note ->
                     NoteCard(
+                        modifier = Modifier.widthIn(max = 160.dp),
                         note = note,
                         background = PinnedNotesLightColors[index % PinnedNotesLightColors.size],
                         onNoteClick = {
@@ -231,12 +237,14 @@ fun NoteCard(
     ) {
         Text(
             text = note.title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = note.updateAt.toString(),
+            text = note.updateAt.toFormatDate(),
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -244,6 +252,8 @@ fun NoteCard(
         Text(
             text = note.content,
             fontSize = 16.sp,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
