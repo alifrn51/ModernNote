@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CreationViewModel : ViewModel() {
+class CreateViewModel : ViewModel() {
 
     val repository = TestNoteRepositoryImpl
     val addNoteUseCase = AddNoteUseCase(repository)

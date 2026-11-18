@@ -21,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
@@ -44,7 +43,7 @@ import com.frn.modernnote.presentation.utils.DateFormatter
 @Composable
 fun CreationScreen(
     modifier: Modifier = Modifier,
-    viewModel: CreationViewModel = viewModel(),
+    viewModel: CreateViewModel = viewModel(),
     onFinished: () -> Unit
 ) {
 
@@ -83,12 +82,8 @@ private fun CreationScreenPreview() {
 private fun Creation(
     modifier: Modifier = Modifier,
     state: CreateNoteState.Creation,
-    viewModel: CreationViewModel,
+    viewModel: CreateViewModel,
 ) {
-    val titleState = rememberTextFieldState()
-    val contentState = rememberTextFieldState()
-
-    val isSaveEnabled = titleState.text.isNotBlank() && contentState.text.isNotBlank() && !state.isSaving
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -124,10 +119,8 @@ private fun Creation(
 
         Content(
             modifier = Modifier.padding(innerPadding),
-            titleState = titleState,
-            contentState = contentState,
             viewModel = viewModel,
-            isSaveEnabled = isSaveEnabled
+            state = state
         )
 
     }
@@ -137,11 +130,16 @@ private fun Creation(
 @Composable
 private fun Content(
     modifier: Modifier = Modifier,
-    titleState: TextFieldState = rememberTextFieldState(),
-    contentState: TextFieldState = rememberTextFieldState(),
-    viewModel: CreationViewModel,
-    isSaveEnabled : Boolean
+    viewModel: CreateViewModel,
+    state: CreateNoteState.Creation
 ) {
+
+    val titleState = rememberTextFieldState()
+    val contentState = rememberTextFieldState()
+
+    val isSaveEnabled = titleState.text.isNotBlank() && contentState.text.isNotBlank() && !state.isSaving
+
+
     Column(
         modifier = modifier.fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
@@ -159,6 +157,7 @@ private fun Content(
                 focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
                 unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
                 focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
             ),
             textStyle = TextStyle(
                 fontSize = 24.sp,
@@ -193,6 +192,7 @@ private fun Content(
                 focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
                 unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
                 focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
             ),
             textStyle = TextStyle(
                 fontSize = 16.sp,

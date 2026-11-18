@@ -2,7 +2,6 @@ package com.frn.modernnote.data
 
 import com.frn.modernnote.domain.Note
 import com.frn.modernnote.domain.NoteRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,9 +10,27 @@ import kotlinx.coroutines.flow.update
 
 object TestNoteRepositoryImpl : NoteRepository {
 
-    private val notesListFlow = MutableStateFlow<List<Note>>(emptyList())
+    private val testData = mutableListOf<Note>().apply {
+        repeat(10) {
+            add(
+                Note(
+                    id = it,
+                    title = "Title $it",
+                    content = "Content $it",
+                    System.currentTimeMillis(),
+                    false
+                )
+            )
+        }
+    }
+    private val notesListFlow = MutableStateFlow<List<Note>>(testData)
 
-    override suspend fun addNote(title: String, content: String, updateAt: Long, isPinned: Boolean) {
+    override suspend fun addNote(
+        title: String,
+        content: String,
+        updateAt: Long,
+        isPinned: Boolean
+    ) {
         notesListFlow.update { oldNotes ->
             val note = Note(
                 id = oldNotes.size,
