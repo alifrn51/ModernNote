@@ -1,4 +1,4 @@
-package com.frn.modernnote.presentation.screens
+package com.frn.modernnote.presentation.screens.notes
 
 import com.frn.modernnote.domain.Note
 

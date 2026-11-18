@@ -28,6 +28,10 @@ object DateFormatter {
 
     }
 
+    fun currentDateTime(): String {
+        return formatter.format(System.currentTimeMillis())
+    }
+
 }
 
 
