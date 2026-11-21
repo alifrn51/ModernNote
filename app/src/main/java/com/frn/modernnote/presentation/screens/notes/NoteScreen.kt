@@ -49,7 +49,6 @@ import com.frn.modernnote.presentation.ui.theme.PinnedNotesLightColors
 import com.frn.modernnote.presentation.utils.toFormatDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun NoteScreen(
     modifier: Modifier = Modifier,

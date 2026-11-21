@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.frn.modernnote.presentation.screens.notes
 
 import androidx.lifecycle.ViewModel
@@ -17,7 +19,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
 class NoteViewModel : ViewModel() {
     private val noteRepository = TestNoteRepositoryImpl
     val getAllNotesUseCase = GetAllNotesUseCase(noteRepository)
